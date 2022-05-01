@@ -1,22 +1,17 @@
 '''
 3. Найти в заданном графе количество и состав компонент связности с
 помощью поиска в глубину
-4. Найти в заданном орграфе количество и состав сильно связных
-компонент с помощью поиска в глубину.
 '''
 
-from pprint import pprint
-from queue import deque
-
 graph = {'A': set(['B', 'C']),
-         'B': set(['A', 'D', 'E']),
-         'C': set(['A', 'F']),
-         'D': set(['B']),
+         'B': set(['D', 'E']),
+         'C': set(['A']),
+         'D': set(['E', 'F']),
          'E': set(['B', 'F']),
-         'F': set(['C', 'E']),
-         'L': set(['M', 'N']),
-         'M': set(['L', 'N']),
-         'N': set(['L', 'M'])
+         'F': set(['A', 'E']),
+         'G': set(['H']),
+         'H': set(['G', 'I']),
+         'I': set(['G', 'H'])
          }
 
 
@@ -30,16 +25,30 @@ def dfs(graph, start):
     return visited
 
 
-dictWithConnectedPoints = {}
+def dfs_paths(graph, start, end):
+    stack = [(start, [start])]
+    visited = set()
+    while stack:
+        (vertex, path) = stack.pop()
+        if vertex not in visited:
+            if vertex == end:
+                return path
+            visited.add(vertex)
+            for neighbor in graph[vertex]:
+                stack.append((neighbor, path + [neighbor]))
+
+
+dict_with_connected_points = {}
 for points in graph:
     result = dfs(graph, points)
-    print(f'Список соединенных вершин с {points}: {result}')
-    dictWithConnectedPoints.update({points: result})
+    print(
+        f'Список посредственно соединенных вершин с {points}: {sorted(result)}')
+    dict_with_connected_points.update({points: result})
 
 # unificate values in dictWithConnectedPoints
 
 
-def unificateValuesInDict(dictionary):
+def unificate_values_in_dict(dictionary):
     for startKey in dictionary:
         for lenKey in dictionary:
             if dictionary[startKey] == dictionary[lenKey] and startKey is not lenKey:
@@ -51,9 +60,21 @@ def unificateValuesInDict(dictionary):
     return dictionary
 
 
-comps = unificateValuesInDict(dictWithConnectedPoints)
+comps = unificate_values_in_dict(dict_with_connected_points)
 index = 0
-print(f'Количество компонент связности в заданном графе: {len(comps)}')
+print(f'\nКоличество компонент связности в заданном графе: {len(comps)}')
 for points in comps:
     index += 1
-    print(f'Компонента связности №{index} состоит из вершин: {comps[points]}')
+    print(
+        f'Компонента связности №{index} состоит из вершин: {sorted(comps[points])}')
+del index
+
+'''
+for start in graph:
+    for goal in graph:
+        startWay = dfs_paths(graph, start, goal)
+        goalWay = dfs_paths(graph, goal, start)
+        if startWay and goalWay and startWay != goalWay:
+            if str(start) in goalWay and str(goal) in startWay:
+                print(f'Связь между вершинами {start} и {goal} есть')
+'''
