@@ -69,7 +69,6 @@ def components(graph):
                 tempDict[start] = listOfAdds
             else:
                 pass
-    #print(f'Cписок: {tempDict}')
 
     for startKey in tempDict:
         for lenKey in tempDict:

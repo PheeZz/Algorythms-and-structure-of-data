@@ -13,22 +13,22 @@ class Graph:
         # можно использовать генератор для заполнения значений по умолчанию, но так проще
         self.graph = defaultdict(list)
 
-    def add_edge(self, s, d):
-        self.graph[s].append(d)
+    def add_edge(self, _from, to):
+        self.graph[_from].append(to)
 
-    def dfs(self, d, visited_vertex):
-        visited_vertex[d] = True
-        print(d, end='')
-        for i in self.graph[d]:
+    def dfs(self, point, visited_vertex):
+        visited_vertex[point] = True
+        print(point, end='')
+        for i in self.graph[point]:
             if not visited_vertex[i]:
                 self.dfs(i, visited_vertex)
 
-    def fill_order(self, d, visited_vertex, stack):
-        visited_vertex[d] = True
-        for i in self.graph[d]:
+    def fill_order(self, point, visited_vertex, stack):
+        visited_vertex[point] = True
+        for i in self.graph[point]:
             if not visited_vertex[i]:
                 self.fill_order(i, visited_vertex, stack)
-        stack = stack.append(d)
+        stack = stack.append(point)
 
     # переворачиваем граф, для поиска компонент связности в обратном порядке
     def transpose(self):
@@ -54,27 +54,27 @@ class Graph:
             i = stack.pop()
             if not visited_vertex[i]:
                 gr.dfs(i, visited_vertex)
-                print("")
+                print('')
 
 
-first_graph = Graph(9)
-first_graph.add_edge(0, 1)
-first_graph.add_edge(0, 2)
-first_graph.add_edge(1, 3)
-first_graph.add_edge(1, 4)
-first_graph.add_edge(2, 0)
-first_graph.add_edge(4, 1)
-first_graph.add_edge(3, 4)
-first_graph.add_edge(3, 5)
-first_graph.add_edge(4, 5)
-first_graph.add_edge(5, 4)
-first_graph.add_edge(5, 0)
-first_graph.add_edge(5, 7)
-first_graph.add_edge(7, 6)
-first_graph.add_edge(6, 7)
-first_graph.add_edge(7, 8)
-first_graph.add_edge(8, 7)
-first_graph.add_edge(8, 6)
+test_graph = Graph(9)
+test_graph.add_edge(0, 1)
+test_graph.add_edge(0, 2)
+test_graph.add_edge(1, 3)
+test_graph.add_edge(1, 4)
+test_graph.add_edge(2, 0)
+test_graph.add_edge(4, 1)
+test_graph.add_edge(3, 4)
+test_graph.add_edge(3, 5)
+test_graph.add_edge(4, 5)
+test_graph.add_edge(5, 4)
+test_graph.add_edge(5, 0)
+test_graph.add_edge(5, 7)
+test_graph.add_edge(7, 6)
+test_graph.add_edge(6, 7)
+test_graph.add_edge(7, 8)
+test_graph.add_edge(8, 7)
+test_graph.add_edge(8, 6)
 
-print("Strongly Connected Components:")
-first_graph.print_scc()
+print("Сильно связанные компоненты:")
+test_graph.print_scc()
