@@ -1,11 +1,11 @@
 # список ребер графа (длина, вершина 1, вершина 2)
-R = [(13, 1, 2), (18, 1, 3), (17, 1, 4), (14, 1, 5), (22, 1, 6),
+vertices_list = [(13, 1, 2), (18, 1, 3), (17, 1, 4), (14, 1, 5), (22, 1, 6),
      (26, 2, 3), (22, 2, 5), (3, 3, 4), (19, 4, 6)]
 
 
 class Graph:
     def __init__(self, vertices):
-        self.vertices = sorted(vertices)
+        self.vertices = sorted(vertices) #граф, отсортированный по возрастанию веса ребер
         self.connected_vertices = set()
         self.isolated = {}
         self.verges = []  # verge = ребро
@@ -30,15 +30,16 @@ class Graph:
                 self.verges.append(vertex)
                 self.connected_vertices.add(vertex[1])
                 self.connected_vertices.add(vertex[2])
+                #print(self.isolated)
 
     def connect_groups(self):
         for vertex in self.vertices:
             # если вершины принадлежат разным группам, то объединяем
             if vertex[2] not in self.isolated[vertex[1]]:
                 self.verges.append(vertex)
-                gr1 = self.isolated[vertex[1]]
-                self.isolated[vertex[1]] += self.isolated[vertex[2]]
-                self.isolated[vertex[2]] += gr1
+                group = self.isolated[vertex[1]]
+                self.isolated[vertex[1]] += self.isolated[vertex[2]] #объединение списков групп вершин
+                self.isolated[vertex[2]] += group
 
     def Kruskal(self):
         self.create_isolated_groups()
@@ -46,5 +47,5 @@ class Graph:
         return self.verges
 
 
-test = Graph(R)
+test = Graph(vertices_list)
 print(f'Результат работы алгоритма Крускала:\n{test.Kruskal()}')

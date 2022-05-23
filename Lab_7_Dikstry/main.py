@@ -1,10 +1,10 @@
 import math
 
 
-def arg_min(last_str, watched):
+def arg_min(weight, watched):
     _min = -1
     _max = math.inf  # максимальное значение
-    for index, value in enumerate(last_str):
+    for index, value in enumerate(weight):
         if value < _max and index not in watched:
             _max = value
             _min = index
@@ -33,7 +33,6 @@ while start_vertex != -1:          # цикл, пока не просмотри�
             w = weight[start_vertex] + value
             if w < weight[index]:
                 weight[index] = w
-                # связываем вершину j с вершиной v
                 optimal_connections[index] = start_vertex
 
     # выбираем следующий узел с наименьшим весом
@@ -42,13 +41,14 @@ while start_vertex != -1:          # цикл, пока не просмотри�
         watched.add(start_vertex)
 
 # формирование оптимального маршрута:
-start = 0
-end = 4
-ret_end = end
-optimal_path = [end]
-while end != start:
-    end = optimal_connections[optimal_path[-1]]
-    optimal_path.append(end)
-
-print(
-    f'Оптимальный путь из вершины {start} в вершину {ret_end}:\n{optimal_path}')
+for verge in range(5):
+    for endWay in range(5):
+        start = verge
+        end = endWay
+        optimal_path = [end]
+        ret_end = end
+        while end != start:
+            end = optimal_connections[optimal_path[-1]]
+            optimal_path.append(end)
+        print(
+            f'Оптимальный путь из вершины {start} в вершину {ret_end}:\n{optimal_path}')
