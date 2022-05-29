@@ -17,27 +17,31 @@ class Graph:
             # берем все возможные цвета убираем из них те которые у соседей и берем первый из оставшихся
         return color_map
 
+    def graph_init(self, list_of_edges):
+        for index in range(self.V):
+            index_connected = []
+            for subindex in range(self.V):
+                if list_of_edges[index][subindex] != 0:
+                    index_connected.append(subindex)
+                    self.graph[index][subindex] = 1
+                    self.graph[subindex][index] = 1
+            self.connections.update({index: index_connected})
+        return self.graph
 
-def graph_init(graph, list_of_edges):
-    for index in range(graph.V):
-        index_connected = []
-        for subindex in range(graph.V):
-            if list_of_edges[index][subindex] != 0:
-                index_connected.append(subindex)
-                graph.graph[index][subindex] = 1
-                graph.graph[subindex][index] = 1
-        graph.connections.update({index: index_connected})
-    return graph
+    def output(self):
+        _tuple = sorted(self.colorNodes().items(), key=lambda x: x[1])
+        for index in range(len(_tuple)):
+            print(f'{_tuple[index][0]} - {_tuple[index][1]}')
 
 
 test_graph = [
-    [0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 1, 1],
-    [0, 1, 0, 1, 1, 1, 0],
-    [0, 0, 1, 0, 1, 0, 0],
-    [0, 0, 1, 1, 0, 1, 1],
-    [0, 1, 1, 0, 1, 0, 1],
-    [1, 1, 0, 0, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 1],  # 0
+    [1, 0, 1, 0, 0, 1, 1],  # 1
+    [0, 1, 0, 1, 1, 1, 0],  # 2
+    [0, 0, 1, 0, 1, 0, 0],  # 3
+    [0, 0, 1, 1, 0, 1, 1],  # 4
+    [0, 1, 1, 0, 1, 0, 1],  # 5
+    [1, 1, 0, 0, 1, 1, 0],  # 6
 ]
 test_graph_2 = [
     [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
@@ -51,14 +55,8 @@ test_graph_2 = [
     [0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
     [0, 0, 0, 1, 0, 0, 0, 0, 1, 0]
 ]
-my_graph = Graph(10)
-my_graph = graph_init(my_graph, test_graph_2)
+test = Graph(7)
+test.graph_init(test_graph)
 
 
-def output(graph):
-    _tuple = sorted(graph.colorNodes().items(), key=lambda x: x[1])
-    for index in range(len(_tuple)):
-        print(f'{_tuple[index][0]} - {_tuple[index][1]}')
-
-
-output(my_graph)
+test.output()

@@ -1,8 +1,9 @@
 import math
+from time import sleep
 
 
-def inNsystem(a, n):  # перевод в N-мерную систему счисления c дополнением до количества предметов
-    global item_count
+# перевод в N-мерную систему счисления c дополнением до количества предметов
+def inNsystem(a, n, item_count):
     res = []
     while a > 0:
         res.append(a % n)
@@ -13,9 +14,9 @@ def inNsystem(a, n):  # перевод в N-мерную систему счис
     return res
 
 
-item_count = 6
 items = [3, 3, 3, 3, 3, 3]
-binSize = 4
+item_count = len(items)
+binSize = 6
 _sum = 0
 for weight in items:
     _sum += weight
@@ -23,16 +24,17 @@ print(_sum)
 max_boxes = math.ceil(_sum / binSize)  # оценка количества ящиков сверху
 best_choice = None
 while best_choice is None:  # пока не найден лучший набор
-    for i in range(max_boxes ** item_count):
+    for index in range(max_boxes ** item_count):
         not_valid = False  # проверка на валидность набора
         box_stored = [0] * max_boxes  # вес который хранит каждый ящик
-        places = inNsystem(i, max_boxes)  # набор
+        places = inNsystem(index, max_boxes, item_count)  # набор
         for item, place in enumerate(places):
             box_stored[place] += items[item]  # загружаем в ящик
             if box_stored[place] > binSize:  # если перебор
                 not_valid = True
                 break
         #print(places, not_valid)
+        #sleep(0.01)
         if not not_valid:
             best_choice = places
             break
