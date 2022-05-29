@@ -15,8 +15,8 @@ class Graph:
 
     def get_min(self):
         _min = (math.inf, -1, -1)
-        for v in self.connected:
-            current_min = min(self.vertices, key=lambda x: x[0] if (x[1] == v or x[2] == v) and (
+        for vertex in self.connected:
+            current_min = min(self.vertices, key=lambda x: x[0] if (x[1] == vertex or x[2] == vertex) and (
                 x[1] not in self.connected or x[2] not in self.connected) else math.inf)
             if _min[0] > current_min[0]:
                 _min = current_min
@@ -37,4 +37,5 @@ class Graph:
 
 
 test = Graph(R)
+print(test.get_min())
 print(f'Результат работы алгоритма Прима:\n{test.algorythm_prima()}')
